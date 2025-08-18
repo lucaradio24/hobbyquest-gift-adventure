@@ -2,56 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
-/* HobbyQuest Design System - Playful Adventure UI with Scandinavian Minimalism
+/* HobbyQuest Design System - Retro Gaming Adventure UI
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    /* Base colors - warm beige/cream background */
-    --background: 32 15% 96%;
-    --foreground: 25 25% 25%;
+    /* Base colors - classic retro game palette */
+    --background: 240 15% 12%;
+    --foreground: 50 80% 95%;
 
-    /* Card styling */
-    --card: 35 20% 98%;
-    --card-foreground: 25 25% 25%;
+    /* Card styling - darker game UI panels */
+    --card: 240 10% 18%;
+    --card-foreground: 50 80% 95%;
 
     /* Popover styling */
-    --popover: 35 20% 98%;
-    --popover-foreground: 25 25% 25%;
+    --popover: 240 10% 18%;
+    --popover-foreground: 50 80% 95%;
 
-    /* Adventure UI primary - deep forest green */
-    --primary: 150 40% 25%;
-    --primary-foreground: 0 0% 100%;
+    /* Adventure UI primary - bright retro green */
+    --primary: 120 60% 50%;
+    --primary-foreground: 240 15% 12%;
 
-    /* Hobby theme colors - coral accent */
-    --secondary: 16 84% 60%;
-    --secondary-foreground: 0 0% 100%;
+    /* Hobby theme colors - vibrant coral */
+    --secondary: 16 90% 65%;
+    --secondary-foreground: 240 15% 12%;
 
-    /* Turquoise accent */
-    --accent: 180 60% 55%;
-    --accent-foreground: 0 0% 100%;
+    /* Electric turquoise */
+    --accent: 180 80% 60%;
+    --accent-foreground: 240 15% 12%;
 
-    /* Lime yellow highlight */
-    --highlight: 60 90% 65%;
-    --highlight-foreground: 25 25% 25%;
+    /* Neon yellow highlight */
+    --highlight: 60 95% 70%;
+    --highlight-foreground: 240 15% 12%;
 
-    /* Muted tones */
-    --muted: 32 12% 90%;
-    --muted-foreground: 25 15% 50%;
+    /* Muted tones for retro feel */
+    --muted: 240 8% 25%;
+    --muted-foreground: 50 20% 70%;
 
-    /* Quest progress colors */
-    --quest-progress: 150 60% 45%;
-    --quest-bg: 32 8% 92%;
+    /* Quest progress colors - bright retro green */
+    --quest-progress: 120 60% 50%;
+    --quest-bg: 240 8% 25%;
 
-    /* Destructive (for errors) */
-    --destructive: 0 75% 55%;
+    /* Destructive (for errors) - classic red */
+    --destructive: 0 80% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    /* Borders and inputs */
-    --border: 32 8% 88%;
-    --input: 32 8% 88%;
-    --ring: 150 60% 45%;
+    /* Borders and inputs - retro style */
+    --border: 240 15% 30%;
+    --input: 240 12% 22%;
+    --ring: 120 60% 50%;
 
     /* Border radius for playful rounded elements */
     --radius: 1rem;
@@ -85,13 +85,22 @@ All colors MUST be HSL.
     @apply bg-background text-foreground font-fredoka;
   }
 
-  /* HobbyQuest animations */
+  /* Retro Gaming animations */
   @keyframes bounce-gentle {
     0%, 100% {
       transform: translateY(0);
     }
     50% {
       transform: translateY(-8px);
+    }
+  }
+
+  @keyframes pixel-glow {
+    0%, 100% {
+      box-shadow: 0 0 5px hsl(var(--primary)), 0 0 10px hsl(var(--primary)), 0 0 15px hsl(var(--primary));
+    }
+    50% {
+      box-shadow: 0 0 10px hsl(var(--primary)), 0 0 20px hsl(var(--primary)), 0 0 30px hsl(var(--primary));
     }
   }
 
@@ -126,6 +135,10 @@ All colors MUST be HSL.
     animation: bounce-gentle 2s ease-in-out infinite;
   }
 
+  .animate-pixel-glow {
+    animation: pixel-glow 2s ease-in-out infinite;
+  }
+
   .animate-progress-fill {
     animation: progress-fill 1s ease-out forwards;
   }
@@ -137,16 +150,37 @@ All colors MUST be HSL.
     animation: typewriter 2s steps(30) forwards, blink-cursor 1s infinite step-end;
   }
 
-  /* Hobby icon hover effects */
+  /* Retro gaming hobby icon effects */
   .hobby-icon {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s ease-out;
+    border: 2px solid hsl(var(--border));
+    box-shadow: 0 4px 0 hsl(var(--border));
   }
 
   .hobby-icon:hover {
-    transform: scale(1.1) translateY(-4px);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 hsl(var(--border));
   }
 
   .hobby-icon:active {
-    transform: scale(0.95);
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 hsl(var(--border));
+  }
+
+  /* Retro button styling */
+  .retro-button {
+    border: 2px solid hsl(var(--border));
+    box-shadow: 0 4px 0 hsl(var(--border));
+    transition: all 0.1s ease-out;
+  }
+
+  .retro-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 hsl(var(--border));
+  }
+
+  .retro-button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 hsl(var(--border));
   }
 }

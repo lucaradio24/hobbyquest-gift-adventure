@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { ProgressBar } from "@/components/ProgressBar";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, CheckCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle, Lock } from "lucide-react";
 
 interface PuzzleScreenProps {
   hobby: string;
@@ -10,40 +12,50 @@ interface PuzzleScreenProps {
   currentProgress: number;
 }
 
-const puzzles: Record<string, { emoji: string; riddle: string; answer: string; hint: string }> = {
+const puzzles: Record<string, { emoji: string; riddle: string; answer: string; hint: string; hideout: string }> = {
   earrings: {
     emoji: "💎✨🔮",
     riddle: "I sparkle and shine, worn close to your ear. What am I that makes beauty appear?",
-    answer: "earrings",
-    hint: "Look for something that dangles and shines! 💫"
+    answer: "orecchini",
+    hint: "Look for something that dangles and shines! 💫",
+    hideout: "Guarda nel cassetto della tua scrivania! 🗂️"
   },
   painting: {
     emoji: "🎨🖌️🌈",
     riddle: "With colors I dance, on canvas I play. What am I that brightens your day?",
-    answer: "brush",
-    hint: "Check near your art supplies! 🎨"
+    answer: "pennello",
+    hint: "Check near your art supplies! 🎨",
+    hideout: "Cerca vicino ai tuoi colori e pennelli! 🎨"
   },
   sewing: {
     emoji: "🪡🧵✂️",
     riddle: "Through fabric I glide, with thread as my guide. What am I that helps clothes coincide?",
-    answer: "needle",
-    hint: "Look in your sewing kit! ✂️"
+    answer: "ago",
+    hint: "Look in your sewing kit! ✂️",
+    hideout: "Nel tuo kit da cucito, dove riponi i fili! 🧵"
   },
   puzzles: {
     emoji: "🧩🔍🤔",
     riddle: "Piece by piece, I come together. What am I that tests your mental weather?",
     answer: "puzzle",
-    hint: "Check your game collection! 🎯"
+    hint: "Check your game collection! 🎯",
+    hideout: "Tra i tuoi giochi da tavolo! 🎲"
   },
   pottery: {
     emoji: "🏺👐🌊",
     riddle: "From earth I'm born, by hands I'm shaped. What am I that can't be escaped?",
-    answer: "clay",
-    hint: "Look for something moldable and earthy! 🌿"
+    answer: "argilla",
+    hint: "Look for something moldable and earthy! 🌿",
+    hideout: "Vicino alle tue cose per la ceramica! 🏺"
   }
 };
 
 export const PuzzleScreen = ({ hobby, onBack, onComplete, currentProgress }: PuzzleScreenProps) => {
+  const [userAnswer, setUserAnswer] = useState("");
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [showHideout, setShowHideout] = useState(false);
+  const [error, setError] = useState("");
+  
   const puzzle = puzzles[hobby];
 
   if (!puzzle) {
@@ -56,6 +68,21 @@ export const PuzzleScreen = ({ hobby, onBack, onComplete, currentProgress }: Puz
       </div>
     );
   }
+
+  const handleSubmit = () => {
+    if (userAnswer.toLowerCase().trim() === puzzle.answer.toLowerCase()) {
+      setIsCorrect(true);
+      setShowHideout(true);
+      setError("");
+    } else {
+      setError("Password sbagliata! Riprova...");
+      setUserAnswer("");
+    }
+  };
+
+  const handleComplete = () => {
+    onComplete();
+  };
 
   return (
     <div className="min-h-screen p-6">
@@ -100,21 +127,58 @@ export const PuzzleScreen = ({ hobby, onBack, onComplete, currentProgress }: Puz
             </p>
           </div>
 
-          {/* Action */}
-          <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Found your gift? Time to claim your reward!
-            </p>
-            <Button 
-              onClick={onComplete}
-              variant="quest"
-              size="lg"
-              className="w-full"
-            >
-              <CheckCircle className="w-5 h-5 mr-2" />
-              Claim Reward
-            </Button>
-          </div>
+          {/* Password Input */}
+          {!showHideout && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-foreground">
+                  <Lock className="w-4 h-4 inline mr-2" />
+                  Inserisci la password:
+                </label>
+                <Input
+                  value={userAnswer}
+                  onChange={(e) => setUserAnswer(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                  placeholder="La tua risposta..."
+                  className="text-center text-lg font-bold retro-button"
+                />
+                {error && (
+                  <p className="text-destructive text-sm text-center">{error}</p>
+                )}
+              </div>
+              <Button 
+                onClick={handleSubmit}
+                variant="secondary"
+                size="lg"
+                className="w-full retro-button"
+                disabled={!userAnswer.trim()}
+              >
+                <Lock className="w-5 h-5 mr-2" />
+                Verifica Password
+              </Button>
+            </div>
+          )}
+
+          {/* Hideout Reveal */}
+          {showHideout && (
+            <div className="space-y-6">
+              <div className="bg-quest-progress text-primary-foreground p-6 rounded-xl animate-pixel-glow">
+                <h3 className="text-lg font-bold mb-2">🎉 Password Corretta!</h3>
+                <p className="text-base">
+                  {puzzle.hideout}
+                </p>
+              </div>
+              <Button 
+                onClick={handleComplete}
+                variant="quest"
+                size="lg"
+                className="w-full retro-button"
+              >
+                <CheckCircle className="w-5 h-5 mr-2" />
+                Continua l'Avventura
+              </Button>
+            </div>
+          )}
         </Card>
       </div>
     </div>

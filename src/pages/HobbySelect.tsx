@@ -34,24 +34,47 @@ export const HobbySelect = ({ onHobbySelect, completedHobbies, currentProgress }
           </p>
         </div>
 
-        {/* Hobby Grid */}
-        <div className="grid grid-cols-2 gap-6">
-          {hobbies.map((hobby) => {
-            const isCompleted = completedHobbies.includes(hobby.id);
-            const isDisabled = isCompleted;
-            
-            return (
-              <HobbyIcon
-                key={hobby.id}
-                icon={hobby.icon}
-                label={hobby.label}
-                color={hobby.color}
-                onClick={() => !isDisabled && onHobbySelect(hobby.id)}
-                disabled={isDisabled}
-                className={`relative ${isCompleted ? 'ring-4 ring-quest-progress' : ''}`}
-              />
-            );
-          })}
+        {/* Hobby Grid - 4 on top, 1 centered below */}
+        <div className="space-y-6">
+          {/* First row - 4 hobbies */}
+          <div className="grid grid-cols-2 gap-4">
+            {hobbies.slice(0, 4).map((hobby) => {
+              const isCompleted = completedHobbies.includes(hobby.id);
+              const isDisabled = isCompleted;
+              
+              return (
+                <HobbyIcon
+                  key={hobby.id}
+                  icon={hobby.icon}
+                  label={hobby.label}
+                  color={hobby.color}
+                  onClick={() => !isDisabled && onHobbySelect(hobby.id)}
+                  disabled={isDisabled}
+                  className={`relative ${isCompleted ? 'animate-pixel-glow' : ''}`}
+                />
+              );
+            })}
+          </div>
+          
+          {/* Second row - 1 hobby centered */}
+          <div className="flex justify-center">
+            {hobbies.slice(4).map((hobby) => {
+              const isCompleted = completedHobbies.includes(hobby.id);
+              const isDisabled = isCompleted;
+              
+              return (
+                <HobbyIcon
+                  key={hobby.id}
+                  icon={hobby.icon}
+                  label={hobby.label}
+                  color={hobby.color}
+                  onClick={() => !isDisabled && onHobbySelect(hobby.id)}
+                  disabled={isDisabled}
+                  className={`relative ${isCompleted ? 'animate-pixel-glow' : ''} w-32`}
+                />
+              );
+            })}
+          </div>
         </div>
 
         {currentProgress === 5 && (
