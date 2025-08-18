@@ -1,14 +1,77 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { Welcome } from "./Welcome";
+import { HobbySelect } from "./HobbySelect";
+import { PuzzleScreen } from "./PuzzleScreen";
+import { Quiz } from "./Quiz";
+import { FinalLetter } from "./FinalLetter";
+
+type GameState = "welcome" | "hobby-select" | "puzzle" | "quiz" | "final-letter";
 
 const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  const [gameState, setGameState] = useState<GameState>("welcome");
+  const [selectedHobby, setSelectedHobby] = useState<string>("");
+  const [completedHobbies, setCompletedHobbies] = useState<string[]>([]);
+
+  const handleStart = () => {
+    setGameState("hobby-select");
+  };
+
+  const handleHobbySelect = (hobby: string) => {
+    setSelectedHobby(hobby);
+    setGameState("puzzle");
+  };
+
+  const handlePuzzleComplete = () => {
+    const newCompleted = [...completedHobbies, selectedHobby];
+    setCompletedHobbies(newCompleted);
+    
+    if (newCompleted.length >= 5) {
+      setGameState("quiz");
+    } else {
+      setGameState("hobby-select");
+    }
+  };
+
+  const handleQuizComplete = () => {
+    setGameState("final-letter");
+  };
+
+  const handleBackToHobbies = () => {
+    setGameState("hobby-select");
+  };
+
+  switch (gameState) {
+    case "welcome":
+      return <Welcome onStart={handleStart} />;
+    
+    case "hobby-select":
+      return (
+        <HobbySelect
+          onHobbySelect={handleHobbySelect}
+          completedHobbies={completedHobbies}
+          currentProgress={completedHobbies.length}
+        />
+      );
+    
+    case "puzzle":
+      return (
+        <PuzzleScreen
+          hobby={selectedHobby}
+          onBack={handleBackToHobbies}
+          onComplete={handlePuzzleComplete}
+          currentProgress={completedHobbies.length}
+        />
+      );
+    
+    case "quiz":
+      return <Quiz onComplete={handleQuizComplete} />;
+    
+    case "final-letter":
+      return <FinalLetter />;
+    
+    default:
+      return <Welcome onStart={handleStart} />;
+  }
 };
 
 export default Index;
