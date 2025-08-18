@@ -17,41 +17,66 @@ const hobbies = [
 
 export const HobbySelect = ({ onHobbySelect, completedHobbies, currentProgress }: HobbySelectProps) => {
   return (
-    <div className="min-h-screen p-6 pb-20">
+    <div className="min-h-screen p-4 sm:p-6 pb-20">
       {/* Progress Bar */}
-      <div className="fixed top-6 left-6 right-6 z-10">
+      <div className="fixed top-4 sm:top-6 left-4 sm:left-6 right-4 sm:right-6 z-10">
         <ProgressBar current={currentProgress} total={5} />
       </div>
 
       {/* Main Content */}
-      <div className="pt-24 max-w-2xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-primary mb-4 font-fredoka">
+      <div className="pt-20 sm:pt-24 max-w-2xl mx-auto">
+        <div className="text-center mb-8 sm:mb-12">
+          <h1 className="text-2xl sm:text-3xl font-bold text-primary mb-4 font-fredoka">
             Choose Your Next Hobby
           </h1>
-          <p className="text-muted-foreground text-lg">
+          <p className="text-muted-foreground text-base sm:text-lg px-4">
             Each hobby holds a special puzzle waiting to be solved! ✨
           </p>
         </div>
 
-        {/* Hobby Grid */}
-        <div className="grid grid-cols-2 gap-6">
-          {hobbies.map((hobby) => {
-            const isCompleted = completedHobbies.includes(hobby.id);
-            const isDisabled = isCompleted;
-            
-            return (
-              <HobbyIcon
-                key={hobby.id}
-                icon={hobby.icon}
-                label={hobby.label}
-                color={hobby.color}
-                onClick={() => !isDisabled && onHobbySelect(hobby.id)}
-                disabled={isDisabled}
-                className={`relative ${isCompleted ? 'ring-4 ring-quest-progress' : ''}`}
-              />
-            );
-          })}
+        {/* Hobby Grid - 4 on top, 1 centered below */}
+        <div className="space-y-6">
+          {/* First row - 4 hobbies */}
+          <div className="grid grid-cols-2 gap-4 sm:gap-6">
+            {hobbies.slice(0, 4).map((hobby) => {
+              const isCompleted = completedHobbies.includes(hobby.id);
+              const isDisabled = isCompleted;
+              
+              return (
+                <HobbyIcon
+                  key={hobby.id}
+                  icon={hobby.icon}
+                  label={hobby.label}
+                  color={hobby.color}
+                  onClick={() => !isDisabled && onHobbySelect(hobby.id)}
+                  disabled={isDisabled}
+                  className={`relative ${isCompleted ? 'animate-pixel-glow' : ''}`}
+                />
+              );
+            })}
+          </div>
+          
+          {/* Second row - 1 hobby centered with same size as others */}
+          <div className="flex justify-center">
+            <div className="w-1/2 max-w-[150px]">
+              {hobbies.slice(4).map((hobby) => {
+                const isCompleted = completedHobbies.includes(hobby.id);
+                const isDisabled = isCompleted;
+                
+                return (
+                  <HobbyIcon
+                    key={hobby.id}
+                    icon={hobby.icon}
+                    label={hobby.label}
+                    color={hobby.color}
+                    onClick={() => !isDisabled && onHobbySelect(hobby.id)}
+                    disabled={isDisabled}
+                    className={`relative ${isCompleted ? 'animate-pixel-glow' : ''} w-full`}
+                  />
+                );
+              })}
+            </div>
+          </div>
         </div>
 
         {currentProgress === 5 && (
