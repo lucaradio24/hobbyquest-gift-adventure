@@ -30,17 +30,18 @@ export const HobbyIcon = ({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "hobby-icon group flex flex-col items-center p-6 rounded-2xl shadow-lg",
+        "hobby-icon group flex flex-col items-center p-4 sm:p-6 rounded-2xl shadow-lg",
         "focus:outline-none focus:ring-4 focus:ring-ring/20",
         "disabled:opacity-50 disabled:cursor-not-allowed",
+        "min-h-[120px] sm:min-h-[140px]", // Ensures consistent height
         colorClasses[color],
         className
       )}
     >
-      <div className="text-6xl mb-3 group-hover:animate-bounce-gentle">
+      <div className="text-4xl sm:text-6xl mb-2 sm:mb-3 group-hover:animate-bounce-gentle">
         {icon}
       </div>
-      <span className="font-medium text-sm text-center">
+      <span className="font-medium text-xs sm:text-sm text-center leading-tight">
         {label}
       </span>
     </button>

@@ -85,9 +85,9 @@ export const PuzzleScreen = ({ hobby, onBack, onComplete, currentProgress }: Puz
   };
 
   return (
-    <div className="min-h-screen p-6">
+    <div className="min-h-screen p-4 sm:p-6">
       {/* Progress Bar */}
-      <div className="fixed top-6 left-6 right-6 z-10">
+      <div className="fixed top-4 sm:top-6 left-4 sm:left-6 right-4 sm:right-6 z-10">
         <ProgressBar current={currentProgress} total={5} />
       </div>
 
@@ -96,33 +96,33 @@ export const PuzzleScreen = ({ hobby, onBack, onComplete, currentProgress }: Puz
         onClick={onBack}
         variant="ghost"
         size="sm"
-        className="fixed top-20 left-6 z-10"
+        className="fixed top-16 sm:top-20 left-4 sm:left-6 z-10"
       >
         <ArrowLeft className="w-4 h-4 mr-2" />
         Back
       </Button>
 
       {/* Main Content */}
-      <div className="pt-32 max-w-lg mx-auto">
-        <Card className="p-8 text-center space-y-8 shadow-xl">
+      <div className="pt-28 sm:pt-32 max-w-lg mx-auto px-4">
+        <Card className="p-6 sm:p-8 text-center space-y-6 sm:space-y-8 shadow-xl">
           {/* Emoji Display */}
-          <div className="text-6xl space-x-2">
+          <div className="text-5xl sm:text-6xl space-x-2">
             {puzzle.emoji}
           </div>
 
           {/* Riddle */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-primary font-fredoka">
+            <h2 className="text-lg sm:text-xl font-bold text-primary font-fredoka">
               Solve the Riddle
             </h2>
-            <p className="text-lg text-foreground leading-relaxed">
+            <p className="text-base sm:text-lg text-foreground leading-relaxed px-2">
               {puzzle.riddle}
             </p>
           </div>
 
           {/* Hint */}
-          <div className="bg-muted p-4 rounded-xl">
-            <p className="text-sm text-muted-foreground font-medium">
+          <div className="bg-muted p-3 sm:p-4 rounded-xl">
+            <p className="text-xs sm:text-sm text-muted-foreground font-medium">
               💡 {puzzle.hint}
             </p>
           </div>
