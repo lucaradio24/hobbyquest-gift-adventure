@@ -53,14 +53,14 @@ export const HobbySelect = ({
   // Shortcut per aprire direttamente la modale (per test)
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.ctrlKey && e.key === 'm') {
+      if (e.ctrlKey && e.key === "m") {
         e.preventDefault();
         setShowBossModal(true);
       }
     };
 
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
   }, []);
 
   const handleStartQuiz = () => {
@@ -73,12 +73,12 @@ export const HobbySelect = ({
   return (
     <div className="min-h-screen p-6 pb-20">
       {/* Progress Bar */}
-      <div className="fixed top-6 left-6 right-6 z-10">
+      <div className="mb-6">
         <ProgressBar current={currentProgress} total={5} />
       </div>
 
       {/* Main Content */}
-      <div className="pt-24 max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold text-primary mb-4 font-fredoka">
             Scegli il tuo prossimo hobby...
@@ -114,7 +114,7 @@ export const HobbySelect = ({
         </div>
 
         {/* Dev Mode: Test Button for Modal */}
-        {process.env.NODE_ENV === 'development' && (
+        {process.env.NODE_ENV === "development" && (
           <div className="text-center mt-8">
             <Button
               onClick={() => setShowBossModal(true)}
@@ -196,7 +196,7 @@ export const HobbySelect = ({
                 >
                   <Crown className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
                   <span className="leading-tight">
-                    Brava Joja! Sconfiggi il Boss finale! 👑
+                    Vai Joja! Sconfiggi il Boss finale! 👑
                   </span>
                 </Button>
 
