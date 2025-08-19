@@ -12,20 +12,20 @@ interface HobbyIconProps {
 
 const colorClasses = {
   coral: "bg-secondary text-secondary-foreground",
-  turquoise: "bg-accent text-accent-foreground", 
+  turquoise: "bg-accent text-accent-foreground",
   lime: "bg-highlight text-highlight-foreground",
   purple: "bg-purple-400 text-white",
-  green: "bg-quest-progress text-white"
+  green: "bg-quest-progress text-white",
 };
 
-export const HobbyIcon = ({ 
-  icon, 
-  label, 
-  color, 
-  onClick, 
+export const HobbyIcon = ({
+  icon,
+  label,
+  color,
+  onClick,
   className,
   disabled = false,
-  showLabel = true
+  showLabel = true,
 }: HobbyIconProps) => {
   return (
     <button
@@ -43,9 +43,7 @@ export const HobbyIcon = ({
         {icon}
       </div>
       {showLabel && (
-        <span className="font-medium text-sm text-center">
-          {label}
-        </span>
+        <span className="font-medium text-sm text-center">{label}</span>
       )}
     </button>
   );

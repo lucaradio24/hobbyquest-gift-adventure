@@ -46,7 +46,7 @@ export const HobbySelect = ({
   // Apri la modale automaticamente quando tutti gli hobby sono completati
   useEffect(() => {
     if (currentProgress === 5 && !showBossModal) {
-      setTimeout(() => setShowBossModal(true), 800); // Piccolo delay per l'effetto
+      setTimeout(() => setShowBossModal(true), 2000); // Ritardo di 2 secondi
     }
   }, [currentProgress, showBossModal]);
 

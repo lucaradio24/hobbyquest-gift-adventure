@@ -13,7 +13,9 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter basename={import.meta.env.PROD ? '/hobbyquest-gift-adventure' : ''}>
+      <BrowserRouter
+        basename={import.meta.env.PROD ? "/hobbyquest-gift-adventure" : ""}
+      >
         <Routes>
           <Route path="/" element={<Index />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

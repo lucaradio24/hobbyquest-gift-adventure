@@ -12,23 +12,23 @@ interface QuizProps {
 // Database domande del quiz (adattato dal tuo quiz.html)
 const questions = [
   {
-    question: "Qual è il colore preferito di Giorgia?",
-    options: ["Verde", "Blu", "Rosso"],
-    correct: "B", // Blu
-    correctIndex: 1,
+    question: "Se la tua vita fosse una barra HP, cosa ti farebbe ricaricare davvero?",
+    options: ["Dormire e mangiare bene", "Livellare senza mai fermarsi", "Le persone con cui condividi l’avventura"],
+    correct: "C", 
+    correctIndex: 2,
   },
   {
-    question: "Quale hobby preferisce Giorgia quando vuole rilassarsi?",
-    options: ["Ascoltare musica", "Dipingere", "Fare puzzle"],
-    correct: "A", // Ascoltare musica
-    correctIndex: 0,
+    question: "La tua energia è al minimo e manca tanto alla fine. Che fai?",
+    options: ["Corro comunque", "Mi fermo a recuperare", "Chiedo aiuto"],
+    correct: "C",
+    correctIndex: 2,
   },
   {
     question:
-      "Qual è il momento preferito di Giorgia per dedicarsi ai suoi hobby?",
-    options: ["Mattina presto", "Pomeriggio", "Sera tardi"],
-    correct: "C", // Sera tardi
-    correctIndex: 2,
+      "Ogni eroe deve scegliere il suo prossimo passo. Ma qual è la vera regola del gioco?",
+    options: ["Non perdere mai una battaglia", "Continuare a premere 'Start'", "Fare più punti di tutti"],
+    correct: "B", 
+    correctIndex: 1,
   },
 ];
 
@@ -37,6 +37,7 @@ export const Quiz = ({ onComplete }: QuizProps) => {
   const [showResult, setShowResult] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [wrongAnswer, setWrongAnswer] = useState(false);
+  const [showSpecialMessage, setShowSpecialMessage] = useState(false);
   const { toast } = useToast();
 
   // Gestione animazione shake per risposta sbagliata
@@ -54,32 +55,22 @@ export const Quiz = ({ onComplete }: QuizProps) => {
 
     if (isCorrect) {
       // Risposta corretta
-      toast({
-        title: "✅ Corretto!",
-        description: "Ottima risposta!",
-      });
-
-      setIsAnimating(true);
-
-      if (currentQuestion < questions.length - 1) {
-        // Prossima domanda
+      // Messaggio speciale per la prima domanda o la terza domanda
+      if (currentQuestion === 0 || currentQuestion === 1 || currentQuestion === 2) {
+        setShowSpecialMessage(true);
         setTimeout(() => {
-          setCurrentQuestion(currentQuestion + 1);
-          setIsAnimating(false);
-        }, 600);
+          setShowSpecialMessage(false);
+          proceedToNext();
+        }, 3000); // Mostra il messaggio per 3 secondi
       } else {
-        // Quiz completato
-        setTimeout(() => {
-          setShowResult(true);
-          setIsAnimating(false);
-        }, 600);
+        proceedToNext();
       }
     } else {
       // Risposta sbagliata
       const encouragements = [
-        "❌ Non proprio, riprova! Pensa ai suoi gusti...",
+        "❌ Non proprio, riprova!",
         "❌ Non è quella giusta! Rifletti ancora un po'...",
-        "❌ Quasi! Conosci meglio i suoi gusti di così...",
+        "❌ Fai cacare, impegnati!",
       ];
 
       toast({
@@ -89,6 +80,24 @@ export const Quiz = ({ onComplete }: QuizProps) => {
         variant: "destructive",
       });
       setWrongAnswer(true);
+    }
+  };
+
+  const proceedToNext = () => {
+    setIsAnimating(true);
+
+    if (currentQuestion < questions.length - 1) {
+      // Prossima domanda
+      setTimeout(() => {
+        setCurrentQuestion(currentQuestion + 1);
+        setIsAnimating(false);
+      }, 600);
+    } else {
+      // Quiz completato
+      setTimeout(() => {
+        setShowResult(true);
+        setIsAnimating(false);
+      }, 600);
     }
   };
 
@@ -119,7 +128,7 @@ export const Quiz = ({ onComplete }: QuizProps) => {
 
             <div className="bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 p-6 rounded-xl">
               <p className="text-lg font-medium text-foreground">
-                Hai dimostrato di conoscere davvero bene i tuoi gusti! 🌟
+                Hai dimostrato di avere la stoffa dell'eroe! 🌟
               </p>
             </div>
 
@@ -191,6 +200,7 @@ export const Quiz = ({ onComplete }: QuizProps) => {
                 onClick={() => handleAnswerSelect(index)}
                 variant="outline"
                 className="w-full text-left justify-start h-auto p-4 hover:scale-[1.02] transition-transform"
+                disabled={showSpecialMessage}
               >
                 <span className="mr-3 font-bold text-primary">
                   {String.fromCharCode(65 + index)}.
@@ -200,6 +210,32 @@ export const Quiz = ({ onComplete }: QuizProps) => {
             ))}
           </div>
         </Card>
+
+        {/* Messaggio speciale dopo la prima risposta corretta */}
+        {showSpecialMessage && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-20 animate-fade-in">
+            <Card className="p-8 m-6 max-w-md text-center shadow-2xl animate-bounce-in">
+              <div className="space-y-4">
+                <div className="text-4xl">💝</div>
+                <h3 className="text-xl font-bold text-primary font-fredoka">
+                  Perfetto!
+                </h3>
+                <p className="text-lg text-foreground leading-relaxed">
+                  {currentQuestion === 0 ? (
+                    <><strong>C</strong>, perché i veri power-up sono le relazioni ✨</>
+                  ) : currentQuestion === 1 ? (
+                    <><strong>C</strong>, perché saper chiedere è l'arma più forte di tutte 💫</>
+                  ) : (
+                    <><strong>B</strong>, perché il vero eroe è colui che non si arrende mai! 🌟</>
+                  )}
+                </p>
+                <div className="text-sm text-muted-foreground">
+                  Tieni duro, ci siamo quasi...
+                </div>
+              </div>
+            </Card>
+          </div>
+        )}
       </div>
     </div>
   );
