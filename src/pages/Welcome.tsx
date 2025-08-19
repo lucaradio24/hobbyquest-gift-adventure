@@ -11,8 +11,13 @@ export const Welcome = ({ onStart }: WelcomeProps) => {
       <div className="text-center max-w-md space-y-8">
         {/* Main Icon */}
         <div className="relative">
-          <div className="w-24 h-24 bg-secondary rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce-gentle shadow-xl">
-            <Gift className="w-12 h-12 text-secondary-foreground" />
+          <div className="w-24 h-24 mx-auto mb-6 animate-bounce-gentle">
+            <img 
+              src={import.meta.env.BASE_URL + "avatar.png"}
+              alt="Pixel Art Avatar" 
+              className="w-full h-full object-contain pixelated"
+              style={{ imageRendering: 'pixelated' }}
+            />
           </div>
           <Sparkles className="absolute -top-2 -right-2 w-8 h-8 text-highlight animate-pulse" />
         </div>

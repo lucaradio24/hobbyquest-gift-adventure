@@ -181,7 +181,7 @@ export const PuzzleScreen = ({
               <div className="space-y-4">
                 <h3 className="text-2xl font-bold text-primary flex items-center justify-center gap-2">
                   <Gift className="w-8 h-8" />
-                  🎁 Segreto sbloccato!
+                  🗡️ Potere sbloccato!
                 </h3>
                 <div className="bg-gradient-to-r from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30 p-6 rounded-xl">
                   <p className="text-lg font-medium text-foreground">

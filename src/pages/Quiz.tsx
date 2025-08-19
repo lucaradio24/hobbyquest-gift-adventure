@@ -49,21 +49,37 @@ export const Quiz = ({ onComplete }: QuizProps) => {
   }, [wrongAnswer]);
 
   const handleAnswerSelect = (answerIndex: number) => {
-    if (isAnimating) return;
+    if (isAnimating || showSpecialMessage) return;
 
     const isCorrect = answerIndex === questions[currentQuestion].correctIndex;
 
     if (isCorrect) {
-      // Risposta corretta
-      // Messaggio speciale per la prima domanda o la terza domanda
+      // First, start the fade out animation
+      setIsAnimating(true);
+
+      // If it's one of the questions that needs a special message
       if (currentQuestion === 0 || currentQuestion === 1 || currentQuestion === 2) {
-        setShowSpecialMessage(true);
+        // After the fade out, show the message with a fade in
         setTimeout(() => {
-          setShowSpecialMessage(false);
-          proceedToNext();
-        }, 3000); // Mostra il messaggio per 3 secondi
+          setIsAnimating(false);
+          setShowSpecialMessage(true);
+          
+          // After showing the message, start its fade out
+          setTimeout(() => {
+            // Fade out special message
+            setShowSpecialMessage(false);
+            // Wait for message to fade out, then show next question with fade in
+            setTimeout(() => {
+              proceedToNext();
+            }, 400); // Wait for special message fade out
+          }, 2000); // Show message duration
+        }, 400); // Initial fade out duration
       } else {
-        proceedToNext();
+        // If no special message, just proceed to next after fade out
+        setTimeout(() => {
+          setIsAnimating(false);
+          proceedToNext();
+        }, 400);
       }
     } else {
       // Risposta sbagliata
@@ -84,20 +100,12 @@ export const Quiz = ({ onComplete }: QuizProps) => {
   };
 
   const proceedToNext = () => {
-    setIsAnimating(true);
-
     if (currentQuestion < questions.length - 1) {
       // Prossima domanda
-      setTimeout(() => {
-        setCurrentQuestion(currentQuestion + 1);
-        setIsAnimating(false);
-      }, 600);
+      setCurrentQuestion(currentQuestion + 1);
     } else {
       // Quiz completato
-      setTimeout(() => {
-        setShowResult(true);
-        setIsAnimating(false);
-      }, 600);
+      setShowResult(true);
     }
   };
 
@@ -183,10 +191,10 @@ export const Quiz = ({ onComplete }: QuizProps) => {
         </div>
 
         <Card
-          className={`p-8 space-y-6 shadow-xl transition-all duration-500 ${
+          className={`p-8 space-y-6 shadow-xl transition-all duration-500 ease-in-out ${
             wrongAnswer ? "animate-shake animate-pulse-error" : ""
           } ${
-            isAnimating ? "animate-slide-out-quiz" : "animate-slide-in-quiz"
+            isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
           }`}
         >
           <h2 className="text-xl font-medium text-center leading-relaxed">
@@ -211,16 +219,16 @@ export const Quiz = ({ onComplete }: QuizProps) => {
           </div>
         </Card>
 
-        {/* Messaggio speciale dopo la prima risposta corretta */}
+        {/* Messaggio speciale dopo la risposta corretta */}
         {showSpecialMessage && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-20 animate-fade-in">
-            <Card className="p-8 m-6 max-w-md text-center shadow-2xl animate-bounce-in">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-20 transition-opacity duration-400 ease-in-out animate-fade-in">
+            <Card className="p-8 m-6 max-w-md text-center shadow-2xl transition-transform duration-500 ease-out animate-scale-in">
               <div className="space-y-4">
-                <div className="text-4xl">💝</div>
-                <h3 className="text-xl font-bold text-primary font-fredoka">
+                <div className="text-4xl animate-bounce-gentle">💝</div>
+                <h3 className="text-xl font-bold text-primary font-fredoka animate-fade-slide-up">
                   Perfetto!
                 </h3>
-                <p className="text-lg text-foreground leading-relaxed">
+                <p className="text-lg text-foreground leading-relaxed animate-fade-slide-up delay-100">
                   {currentQuestion === 0 ? (
                     <><strong>C</strong>, perché i veri power-up sono le relazioni ✨</>
                   ) : currentQuestion === 1 ? (
@@ -229,7 +237,7 @@ export const Quiz = ({ onComplete }: QuizProps) => {
                     <><strong>B</strong>, perché il vero eroe è colui che non si arrende mai! 🌟</>
                   )}
                 </p>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-muted-foreground animate-fade-slide-up delay-200">
                   Tieni duro, ci siamo quasi...
                 </div>
               </div>
