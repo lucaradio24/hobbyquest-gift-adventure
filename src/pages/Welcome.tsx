@@ -25,7 +25,7 @@ export const Welcome = ({ onStart }: WelcomeProps) => {
         {/* Title */}
         <div className="space-y-4">
           <h1 className="text-4xl font-bold text-primary font-fredoka">
-            Benvuta in
+            Benvenuta in
           </h1>
           <div className="text-5xl font-bold bg-gradient-to-r from-secondary via-accent to-highlight bg-clip-text text-transparent font-fredoka">
             HobbyQuest

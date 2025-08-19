@@ -222,7 +222,7 @@ export const Quiz = ({ onComplete }: QuizProps) => {
                 key={index}
                 onClick={() => handleAnswerSelect(index)}
                 variant="outline"
-                className="w-full text-left justify-start h-auto p-4 hover:scale-[1.02] transition-transform"
+                className="w-full text-left justify-start h-auto p-4 hover:scale-[1.02] transition-transform whitespace-normal min-h-[60px] flex items-start"
                 disabled={showSpecialMessage}
               >
                 <span className="mr-3 font-bold text-primary">
