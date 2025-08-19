@@ -20,7 +20,7 @@ export const Welcome = ({ onStart }: WelcomeProps) => {
         {/* Title */}
         <div className="space-y-4">
           <h1 className="text-4xl font-bold text-primary font-fredoka">
-            Welcome to
+            Benvuta in
           </h1>
           <div className="text-5xl font-bold bg-gradient-to-r from-secondary via-accent to-highlight bg-clip-text text-transparent font-fredoka">
             HobbyQuest
@@ -29,9 +29,8 @@ export const Welcome = ({ onStart }: WelcomeProps) => {
 
         {/* Subtitle */}
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Your birthday mission begins here! 🎉
-          <br />
-          Discover new hobbies, solve puzzles, and unlock wonderful surprises.
+          La tua avventura di compleanno sta per iniziare... 🎉
+          
         </p>
 
         {/* Start Button */}
@@ -41,7 +40,7 @@ export const Welcome = ({ onStart }: WelcomeProps) => {
           size="lg"
           className="w-full max-w-xs font-semibold"
         >
-          Start Adventure
+          Inizia la missione
           <Sparkles className="ml-2 w-5 h-5" />
         </Button>
 

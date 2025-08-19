@@ -13,7 +13,7 @@ export const ProgressBar = ({ current, total, className }: ProgressBarProps) => 
     <div className={cn("w-full max-w-md mx-auto", className)}>
       <div className="flex justify-between items-center mb-2">
         <span className="text-sm font-medium text-muted-foreground">
-          Quest Progress
+          Progresso della missione
         </span>
         <span className="text-sm font-bold text-primary">
           {current}/{total}

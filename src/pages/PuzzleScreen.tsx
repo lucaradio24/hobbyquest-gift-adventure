@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { ProgressBar } from "@/components/ProgressBar";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, CheckCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle, Eye, Gift } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface PuzzleScreenProps {
   hobby: string;
@@ -10,48 +13,95 @@ interface PuzzleScreenProps {
   currentProgress: number;
 }
 
-const puzzles: Record<string, { emoji: string; riddle: string; answer: string; hint: string }> = {
+// Database hobby → indizio, password, istruzioni (adattato dal tuo puzzle.js)
+const hobbyData: Record<
+  string,
+  { hint: string; pass: string; where: string; emoji: string }
+> = {
   earrings: {
-    emoji: "💎✨🔮",
-    riddle: "I sparkle and shine, worn close to your ear. What am I that makes beauty appear?",
-    answer: "earrings",
-    hint: "Look for something that dangles and shines! 💫"
+    hint: "Cerca vicino al luogo dove ti prepari per uscire...",
+    pass: "BRILLA123",
+    where: "Il regalo si trova nella tua camera, nel cassetto dei gioielli.",
+    emoji: "�✨🔮",
   },
   painting: {
+    hint: "Vicino ai colori che usi per dare vita alle tue idee...",
+    pass: "ARTE321",
+    where: "Il regalo ti aspetta nel cassetto con i pennelli.",
     emoji: "🎨🖌️🌈",
-    riddle: "With colors I dance, on canvas I play. What am I that brightens your day?",
-    answer: "brush",
-    hint: "Check near your art supplies! 🎨"
   },
   sewing: {
+    hint: "Dove ti siedi spesso per rilassarti con ago e filo?",
+    pass: "CUCITO789",
+    where: "Troverai il regalo nascosto sul divano, sotto il cuscino colorato.",
     emoji: "🪡🧵✂️",
-    riddle: "Through fabric I glide, with thread as my guide. What am I that helps clothes coincide?",
-    answer: "needle",
-    hint: "Look in your sewing kit! ✂️"
   },
   puzzles: {
+    hint: "Un enigma ti porta vicino al luogo dei giochi e dei passatempi...",
+    pass: "PUZZLE654",
+    where: "Il regalo si trova sul tavolo da gioco in salotto.",
     emoji: "🧩🔍🤔",
-    riddle: "Piece by piece, I come together. What am I that tests your mental weather?",
-    answer: "puzzle",
-    hint: "Check your game collection! 🎯"
   },
   pottery: {
-    emoji: "🏺👐🌊",
-    riddle: "From earth I'm born, by hands I'm shaped. What am I that can't be escaped?",
-    answer: "clay",
-    hint: "Look for something moldable and earthy! 🌿"
-  }
+    hint: "Cerca dove riponi i tuoi tesori di terra...",
+    pass: "CRETA456",
+    where: "Il regalo è nascosto vicino ai tuoi vasi, sul terrazzo.",
+    emoji: "🏺👐�",
+  },
 };
 
-export const PuzzleScreen = ({ hobby, onBack, onComplete, currentProgress }: PuzzleScreenProps) => {
-  const puzzle = puzzles[hobby];
+export const PuzzleScreen = ({
+  hobby,
+  onBack,
+  onComplete,
+  currentProgress,
+}: PuzzleScreenProps) => {
+  const [password, setPassword] = useState("");
+  const [showGift, setShowGift] = useState(false);
+  const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
+  const { toast } = useToast();
 
-  if (!puzzle) {
+  const puzzleData = hobbyData[hobby];
+
+  const handlePasswordSubmit = () => {
+    const trimmedPassword = password.trim().toUpperCase();
+
+    if (trimmedPassword === puzzleData.pass) {
+      setIsPasswordCorrect(true);
+      setShowGift(true);
+      toast({
+        title: "🎉 Password corretta!",
+        description: "Hai sbloccato il tuo regalo!",
+      });
+    } else {
+      toast({
+        title: "❌ Password sbagliata",
+        description: "Riprova! Controlla bene il post-it.",
+        variant: "destructive",
+      });
+      // Reset password on wrong attempt
+      setPassword("");
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && password.trim() && !isPasswordCorrect) {
+      handlePasswordSubmit();
+    }
+  };
+
+  const handleClaimReward = () => {
+    onComplete();
+  };
+
+  if (!puzzleData) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6">
         <Card className="p-8 text-center">
-          <p className="text-destructive">Puzzle not found!</p>
-          <Button onClick={onBack} className="mt-4">Go Back</Button>
+          <p className="text-destructive">Hobby non trovato!</p>
+          <Button onClick={onBack} className="mt-4">
+            Torna Indietro
+          </Button>
         </Card>
       </div>
     );
@@ -79,42 +129,78 @@ export const PuzzleScreen = ({ hobby, onBack, onComplete, currentProgress }: Puz
       <div className="pt-32 max-w-lg mx-auto">
         <Card className="p-8 text-center space-y-8 shadow-xl">
           {/* Emoji Display */}
-          <div className="text-6xl space-x-2">
-            {puzzle.emoji}
-          </div>
+          <div className="text-6xl space-x-2">{puzzleData.emoji}</div>
 
-          {/* Riddle */}
+          {/* Mission Title */}
           <div className="space-y-4">
-            <h2 className="text-xl font-bold text-primary font-fredoka">
-              Solve the Riddle
+            <h2 className="text-2xl font-bold text-primary font-fredoka flex items-center justify-center gap-2">
+              <Eye className="w-6 h-6" />
+              La tua missione
             </h2>
-            <p className="text-lg text-foreground leading-relaxed">
-              {puzzle.riddle}
+            <p className="text-lg text-foreground leading-relaxed bg-muted p-4 rounded-xl">
+              {puzzleData.hint}
             </p>
           </div>
 
-          {/* Hint */}
-          <div className="bg-muted p-4 rounded-xl">
-            <p className="text-sm text-muted-foreground font-medium">
-              💡 {puzzle.hint}
-            </p>
-          </div>
+          {/* Password Section */}
+          {!showGift ? (
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-primary">
+                Inserisci la password del post-it
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Cerca il post-it nascosto e inserisci la password per sbloccare
+                il regalo! 🔍
+              </p>
+              <div className="space-y-3">
+                <Input
+                  type="text"
+                  placeholder="Inserisci la password..."
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value.toUpperCase())}
+                  onKeyPress={handleKeyPress}
+                  className="text-center text-lg font-semibold tracking-wider"
+                  autoComplete="off"
+                  disabled={isPasswordCorrect}
+                  maxLength={20}
+                />
+                <Button
+                  onClick={handlePasswordSubmit}
+                  variant="quest"
+                  size="lg"
+                  className="w-full"
+                  disabled={isPasswordCorrect || !password.trim()}
+                >
+                  Conferma
+                </Button>
+              </div>
+            </div>
+          ) : (
+            /* Gift Reveal Section */
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <h3 className="text-2xl font-bold text-primary flex items-center justify-center gap-2">
+                  <Gift className="w-8 h-8" />
+                  🎁 Segreto sbloccato!
+                </h3>
+                <div className="bg-gradient-to-r from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30 p-6 rounded-xl">
+                  <p className="text-lg font-medium text-foreground">
+                    {puzzleData.where}
+                  </p>
+                </div>
+              </div>
 
-          {/* Action */}
-          <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              Found your gift? Time to claim your reward!
-            </p>
-            <Button 
-              onClick={onComplete}
-              variant="quest"
-              size="lg"
-              className="w-full"
-            >
-              <CheckCircle className="w-5 h-5 mr-2" />
-              Claim Reward
-            </Button>
-          </div>
+              <Button
+                onClick={handleClaimReward}
+                variant="quest"
+                size="lg"
+                className="w-full"
+              >
+                <CheckCircle className="w-5 h-5 mr-2" />
+                Ho trovato il tesoro.
+              </Button>
+            </div>
+          )}
         </Card>
       </div>
     </div>
