@@ -5,7 +5,12 @@ import { PuzzleScreen } from "./PuzzleScreen";
 import { Quiz } from "./Quiz";
 import { FinalLetter } from "./FinalLetter";
 
-type GameState = "welcome" | "hobby-select" | "puzzle" | "quiz" | "final-letter";
+type GameState =
+  | "welcome"
+  | "hobby-select"
+  | "puzzle"
+  | "quiz"
+  | "final-letter";
 
 const Index = () => {
   const [gameState, setGameState] = useState<GameState>("welcome");
@@ -24,12 +29,13 @@ const Index = () => {
   const handlePuzzleComplete = () => {
     const newCompleted = [...completedHobbies, selectedHobby];
     setCompletedHobbies(newCompleted);
-    
-    if (newCompleted.length >= 5) {
-      setGameState("quiz");
-    } else {
-      setGameState("hobby-select");
-    }
+
+    // Sempre torna alla selezione hobby, il quiz sarà attivato manualmente
+    setGameState("hobby-select");
+  };
+
+  const handleStartQuiz = () => {
+    setGameState("quiz");
   };
 
   const handleQuizComplete = () => {
@@ -43,16 +49,17 @@ const Index = () => {
   switch (gameState) {
     case "welcome":
       return <Welcome onStart={handleStart} />;
-    
+
     case "hobby-select":
       return (
         <HobbySelect
           onHobbySelect={handleHobbySelect}
           completedHobbies={completedHobbies}
           currentProgress={completedHobbies.length}
+          onStartQuiz={handleStartQuiz}
         />
       );
-    
+
     case "puzzle":
       return (
         <PuzzleScreen
@@ -62,13 +69,13 @@ const Index = () => {
           currentProgress={completedHobbies.length}
         />
       );
-    
+
     case "quiz":
       return <Quiz onComplete={handleQuizComplete} />;
-    
+
     case "final-letter":
       return <FinalLetter />;
-    
+
     default:
       return <Welcome onStart={handleStart} />;
   }
