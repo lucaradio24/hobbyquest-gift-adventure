@@ -12,11 +12,11 @@ export const Welcome = ({ onStart }: WelcomeProps) => {
         {/* Main Icon */}
         <div className="relative">
           <div className="w-24 h-24 mx-auto mb-6 animate-bounce-gentle">
-            <img 
+            <img
               src={import.meta.env.BASE_URL + "avatar.png"}
-              alt="Pixel Art Avatar" 
+              alt="Pixel Art Avatar"
               className="w-full h-full object-contain pixelated"
-              style={{ imageRendering: 'pixelated' }}
+              style={{ imageRendering: "pixelated" }}
             />
           </div>
           <Sparkles className="absolute -top-2 -right-2 w-8 h-8 text-highlight animate-pulse" />
@@ -35,11 +35,10 @@ export const Welcome = ({ onStart }: WelcomeProps) => {
         {/* Subtitle */}
         <p className="text-lg text-muted-foreground leading-relaxed">
           La tua avventura di compleanno sta per iniziare... 🎉
-          
         </p>
 
         {/* Start Button */}
-        <Button 
+        <Button
           onClick={onStart}
           variant="quest"
           size="lg"
@@ -52,8 +51,14 @@ export const Welcome = ({ onStart }: WelcomeProps) => {
         {/* Decorative elements */}
         <div className="flex justify-center space-x-4 mt-8 opacity-60">
           <div className="w-3 h-3 bg-secondary rounded-full animate-pulse" />
-          <div className="w-3 h-3 bg-accent rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
-          <div className="w-3 h-3 bg-highlight rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
+          <div
+            className="w-3 h-3 bg-accent rounded-full animate-pulse"
+            style={{ animationDelay: "0.5s" }}
+          />
+          <div
+            className="w-3 h-3 bg-highlight rounded-full animate-pulse"
+            style={{ animationDelay: "1s" }}
+          />
         </div>
       </div>
     </div>

@@ -12,9 +12,14 @@ interface QuizProps {
 // Database domande del quiz (adattato dal tuo quiz.html)
 const questions = [
   {
-    question: "Se la tua vita fosse una barra HP, cosa ti farebbe ricaricare davvero?",
-    options: ["Dormire e mangiare bene", "Livellare senza mai fermarsi", "Le persone con cui condividi l’avventura"],
-    correct: "C", 
+    question:
+      "Se la tua vita fosse una barra HP, cosa ti farebbe ricaricare davvero?",
+    options: [
+      "Dormire e mangiare bene",
+      "Livellare senza mai fermarsi",
+      "Le persone con cui condividi l'avventura",
+    ],
+    correct: "C",
     correctIndex: 2,
   },
   {
@@ -26,8 +31,12 @@ const questions = [
   {
     question:
       "Ogni eroe deve scegliere il suo prossimo passo. Ma qual è la vera regola del gioco?",
-    options: ["Non perdere mai una battaglia", "Continuare a premere 'Start'", "Fare più punti di tutti"],
-    correct: "B", 
+    options: [
+      "Non perdere mai una battaglia",
+      "Continuare a premere 'Start'",
+      "Fare più punti di tutti",
+    ],
+    correct: "B",
     correctIndex: 1,
   },
 ];
@@ -58,12 +67,16 @@ export const Quiz = ({ onComplete }: QuizProps) => {
       setIsAnimating(true);
 
       // If it's one of the questions that needs a special message
-      if (currentQuestion === 0 || currentQuestion === 1 || currentQuestion === 2) {
+      if (
+        currentQuestion === 0 ||
+        currentQuestion === 1 ||
+        currentQuestion === 2
+      ) {
         // After the fade out, show the message with a fade in
         setTimeout(() => {
           setIsAnimating(false);
           setShowSpecialMessage(true);
-          
+
           // After showing the message, start its fade out
           setTimeout(() => {
             // Fade out special message
@@ -194,7 +207,9 @@ export const Quiz = ({ onComplete }: QuizProps) => {
           className={`p-8 space-y-6 shadow-xl transition-all duration-500 ease-in-out ${
             wrongAnswer ? "animate-shake animate-pulse-error" : ""
           } ${
-            isAnimating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
+            isAnimating
+              ? "opacity-0 translate-y-4"
+              : "opacity-100 translate-y-0"
           }`}
         >
           <h2 className="text-xl font-medium text-center leading-relaxed">
@@ -230,11 +245,20 @@ export const Quiz = ({ onComplete }: QuizProps) => {
                 </h3>
                 <p className="text-lg text-foreground leading-relaxed animate-fade-slide-up delay-100">
                   {currentQuestion === 0 ? (
-                    <><strong>C</strong>, perché i veri power-up sono le relazioni ✨</>
+                    <>
+                      <strong>C</strong>, perché i veri power-up sono le
+                      relazioni ✨
+                    </>
                   ) : currentQuestion === 1 ? (
-                    <><strong>C</strong>, perché saper chiedere è l'arma più forte di tutte 💫</>
+                    <>
+                      <strong>C</strong>, perché saper chiedere è l'arma più
+                      forte di tutte 💫
+                    </>
                   ) : (
-                    <><strong>B</strong>, perché il vero eroe è colui che non si arrende mai! 🌟</>
+                    <>
+                      <strong>B</strong>, perché il vero eroe è colui che non si
+                      arrende mai! 🌟
+                    </>
                   )}
                 </p>
                 <div className="text-sm text-muted-foreground animate-fade-slide-up delay-200">
