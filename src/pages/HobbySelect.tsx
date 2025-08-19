@@ -50,6 +50,19 @@ export const HobbySelect = ({
     }
   }, [currentProgress, showBossModal]);
 
+  // Shortcut per aprire direttamente la modale (per test)
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === 'm') {
+        e.preventDefault();
+        setShowBossModal(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
+
   const handleStartQuiz = () => {
     setShowBossModal(false);
     if (onStartQuiz) {
@@ -100,6 +113,20 @@ export const HobbySelect = ({
           })}
         </div>
 
+        {/* Dev Mode: Test Button for Modal */}
+        {process.env.NODE_ENV === 'development' && (
+          <div className="text-center mt-8">
+            <Button
+              onClick={() => setShowBossModal(true)}
+              variant="outline"
+              size="sm"
+              className="text-xs text-muted-foreground"
+            >
+              🧪 Test Boss Modal (Ctrl+M)
+            </Button>
+          </div>
+        )}
+
         {currentProgress === 5 && (
           <div className="text-center mt-12">
             <div className="bg-card p-6 rounded-2xl shadow-lg border-2 border-quest-progress">
@@ -115,35 +142,35 @@ export const HobbySelect = ({
 
         {/* Boss Challenge Modal */}
         <Dialog open={showBossModal} onOpenChange={setShowBossModal}>
-          <DialogContent className="max-w-md mx-auto">
+          <DialogContent className="sm:max-w-md max-w-[90vw] mx-4">
             <DialogHeader>
               <DialogTitle className="text-center space-y-4">
                 <div className="flex justify-center space-x-2 mb-4">
-                  <Trophy className="w-10 h-10 text-yellow-600 animate-bounce" />
+                  <Trophy className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-600 animate-bounce" />
                   <Crown
-                    className="w-10 h-10 text-yellow-500 animate-bounce"
+                    className="w-8 h-8 sm:w-10 sm:h-10 text-yellow-500 animate-bounce"
                     style={{ animationDelay: "0.2s" }}
                   />
                   <Sparkles
-                    className="w-10 h-10 text-orange-500 animate-bounce"
+                    className="w-8 h-8 sm:w-10 sm:h-10 text-orange-500 animate-bounce"
                     style={{ animationDelay: "0.4s" }}
                   />
                 </div>
-                <h2 className="text-2xl font-bold text-primary font-fredoka">
+                <h2 className="text-xl sm:text-2xl font-bold text-primary font-fredoka">
                   🎉 Incredibile!
                 </h2>
               </DialogTitle>
             </DialogHeader>
 
-            <div className="space-y-6 py-4">
+            <div className="space-y-4 sm:space-y-6 py-2 sm:py-4">
               {/* Celebration Message */}
               <div className="text-center space-y-3">
-                <p className="text-lg text-foreground font-medium">
+                <p className="text-base sm:text-lg text-foreground font-medium">
                   Hai sbloccato tutti gli hobby! ✨
                 </p>
 
-                <div className="bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 p-4 rounded-xl">
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                <div className="bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 p-3 sm:p-4 rounded-xl">
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     Ma ora è il momento di testare davvero le tue abilità...
                   </p>
                 </div>
@@ -154,7 +181,7 @@ export const HobbySelect = ({
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
-                    className="w-6 h-6 text-yellow-500 fill-yellow-500"
+                    className="w-5 h-5 sm:w-6 sm:h-6 text-yellow-500 fill-yellow-500"
                   />
                 ))}
               </div>
@@ -165,17 +192,19 @@ export const HobbySelect = ({
                   onClick={handleStartQuiz}
                   variant="quest"
                   size="lg"
-                  className="w-full transform hover:scale-105 transition-all duration-300 shadow-lg"
+                  className="w-full transform hover:scale-105 transition-all duration-300 shadow-lg text-sm sm:text-base px-2 sm:px-4"
                 >
-                  <Crown className="w-5 h-5 mr-2" />
-                  Brava Joja! Sconfiggi il Boss finale! 👑
+                  <Crown className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
+                  <span className="leading-tight">
+                    Brava Joja! Sconfiggi il Boss finale! 👑
+                  </span>
                 </Button>
 
                 <Button
                   onClick={() => setShowBossModal(false)}
                   variant="outline"
                   size="sm"
-                  className="w-full"
+                  className="w-full text-xs sm:text-sm"
                 >
                   Non posso, sono brutta e scarsa
                 </Button>
